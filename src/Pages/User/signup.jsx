@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import google from '../../../Assets/google.svg';
 import sign from '../../../Assets/sign.jpg'
 import Otp from './otp'
-import { Link } from 'react-router-dom';
+import { Link,  useNavigate } from 'react-router-dom';
 import { userSchema } from '../../../Utils/SignupVal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ValidationError } from 'yup';
 import { UserRegister } from '../../Server/User/UserReg';
+import { VerifyUser } from '../../Server/User/VerifyOtp';
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -17,6 +18,9 @@ function Signup() {
     password: '',
     confirmPassword: ''
   });
+
+  const navigate = useNavigate()
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -77,8 +81,20 @@ function Signup() {
     
   }
 
+
+  // otp handle here
+
   const onOtpSubmit=(otp)=>{
     console.log('success');
+    VerifyUser(otp).then(verify=>{
+      console.log('verifymsg',verify);
+      if(verify.message==='account created'){
+        console.log('signin complete/user added');
+        navigate('/')
+      }else{
+        console.log('error in otp');
+      }
+    })
   }
   return (
     

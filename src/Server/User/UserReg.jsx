@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API } from "../../ApiPoints/UserApi/UserApi";
 
-const API = 'http://127.0.0.1:8000/api';
+    
 
 export const UserRegister = async (username, email, role, password ) =>{
     const newUser ={
