@@ -1,6 +1,6 @@
 import { Input, Typography, Button } from "@material-tailwind/react";
 //   import { Link } from "react-router-dom";
-import pattern from "../Assets/Image/pattern.png";
+import pattern from "../../Assets/Image/pattern.png";
 import { useState } from "react";
 import { loginSchema } from "../../../../Utils/LoginValidation";
 import { useDispatch } from "react-redux";

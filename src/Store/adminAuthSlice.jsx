@@ -22,12 +22,12 @@ export const LoginAdmin = createAsyncThunk('user/LoginAdmin', async ({ email, pa
 
 
 
-const authSlice = createSlice({
+const AdminauthSlice = createSlice({
     name: 'auth',
-    initialState: initialstate.usertoken,
+    initialState: initialstate.AdminToken,
     reducers: {
         Logout: (state) => {
-            return initialstate.usertoken;
+            return initialstate.AdminToken;
         },
         Success: (state, action) => {
             return {
@@ -66,5 +66,5 @@ const authSlice = createSlice({
     },
 });
 
-export const { Logout, Success } = authSlice.actions;
-export default authSlice.reducer
+export const { Logout, Success } = AdminauthSlice.actions;
+export default AdminauthSlice.reducer
