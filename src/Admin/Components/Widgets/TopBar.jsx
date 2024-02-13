@@ -35,7 +35,7 @@ const TopBar = ({ bg, color,rou }) => {
   }
   return (
     <Navbar
-      color={ color }
+      color='gray'
       className={`rounded-xl transition-all sticky top-4 z-40 py-3 shadow-md shadow-black-500/5 ${bg}`}
       fullWidth
     >

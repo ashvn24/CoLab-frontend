@@ -61,7 +61,7 @@ const AllUsers = () => {
 
     try {
       setLoading(true)
-      const res = await listUserslist(access)
+      const res = await listUserslist()
       console.log(res);
       if (res.status===200){
         setListUsers(res.data)
@@ -81,7 +81,7 @@ const AllUsers = () => {
   const handleToggle =async (id) =>{
     setLoading(true)
     try {
-      const status = await UserStatus(id,access)
+      const status = await UserStatus(id)
       if (status.status===200){
         setUserStatusChange('Staus Updated')
         setLoading(false)

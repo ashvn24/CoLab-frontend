@@ -1,10 +1,19 @@
-import React from 'react'
-import { Link, Route, Routes } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import SideNav from '../Admin/Components/Widgets/SideNav'
 import TopBar from '../Admin/Components/Widgets/TopBar'
 import { indexCreator } from '../Admin/Components/Roots/RootLinks'
+import { useSelector } from 'react-redux'
 
 const Index = () => {
+  const{ access } = useSelector((state) => state.usertoken)
+  const nav = useNavigate()
+  console.log((access));
+  useEffect(() => {
+    if(access===null){
+      nav('/')
+    }
+  }, [])
   return (
 //     <div>
 //       <div className="topbar w-full flex items-center justify-between py-3 md:py-6 px-4 bg-primary">

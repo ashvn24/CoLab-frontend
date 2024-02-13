@@ -1,16 +1,12 @@
 import axios from "axios";
 import { API } from "../../ApiPoints/UserApi/UserApi";
+import {axiosInstance} from "../utils/axiosInstance";
 
-export const listUserslist = async(access)=>{
+export const listUserslist = async()=>{
     try {
 
-        const jwtToken = access
-
-        const res = await axios.get(`${API}/admin/allUsers/`,{
-            headers: {
-                Authorization: `Bearer ${jwtToken}`
-            }
-        });
+        // const jwtToken = access
+        const res = await axiosInstance.get(`/admin/allUsers/`);
         if (res.status === 200) {
             // Assuming the response contains users data
             return res;

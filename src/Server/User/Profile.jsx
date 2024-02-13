@@ -1,18 +1,9 @@
-import axios from "axios";
-import { API } from "../../ApiPoints/UserApi/UserApi";
-import { Profile } from "../../Store/UserSlice";
-import { useDispatch } from "react-redux";
+import { axiosInstanceUser } from "../utils/axiosInstance";
 
-export const UserProfile = async(access)=>{
+export const UserProfile = async()=>{
     try {
 
-        const jwtToken = access
-        console.log('reached');
-        const res = await axios.get(`${API}/profile/`,{
-            headers: {
-                Authorization: `Bearer ${jwtToken}`
-            }
-        });
+        const res = await axiosInstanceUser.get(`/profile/`,);
         if (res.status === 200) {
             // Assuming the response contains users data
             return res;

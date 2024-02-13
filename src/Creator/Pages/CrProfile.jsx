@@ -8,7 +8,6 @@ const CrProfile = () => {
     const [userData, setUserData] = useState(null)
     const [loading, setLoading] = useState(false);
 
-    const{ access } = useSelector((state) => state.usertoken)
 
 
     useEffect(() => {
@@ -18,7 +17,7 @@ const CrProfile = () => {
     const fetchprofile = async () =>{
         try {
             setLoading(true)
-            const res = await UserProfile(access)
+            const res = await UserProfile()
             if(res.status===200){
                 setUserData(res.data)
                 console.log(userData);

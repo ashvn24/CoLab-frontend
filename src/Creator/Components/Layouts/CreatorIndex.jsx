@@ -1,10 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import SideNav from '../../../Admin/Components/Widgets/SideNav'
 import { indexCreator } from '../../../Admin/Components/Roots/RootLinks'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import TopBar from '../../../Admin/Components/Widgets/TopBar'
+import { useSelector } from 'react-redux'
 
 export default function CreatorIndex() {
+
+  const{ access } = useSelector((state) => state.usertoken)
+  const nav = useNavigate()
+  useEffect(() => {
+    if(access===null){
+      nav('/')
+    }
+  }, [])
+  
+
   return (
     <div className="min-h-screen ">
       <SideNav routes={indexCreator} bg={'bg-slate-400 bg-opacity-20'}/>
