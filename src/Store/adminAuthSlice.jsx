@@ -26,7 +26,7 @@ const AdminauthSlice = createSlice({
     name: 'auth',
     initialState: initialstate.AdminToken,
     reducers: {
-        Logout: (state) => {
+        AdminLogout: (state) => {
             return initialstate.AdminToken;
         },
         Success: (state, action) => {
@@ -66,5 +66,5 @@ const AdminauthSlice = createSlice({
     },
 });
 
-export const { Logout, Success } = AdminauthSlice.actions;
+export const { AdminLogout, Success } = AdminauthSlice.actions;
 export default AdminauthSlice.reducer

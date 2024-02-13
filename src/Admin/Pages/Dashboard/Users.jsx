@@ -7,6 +7,7 @@ import { Card, CardBody, CardHeader, Typography } from '@material-tailwind/react
 import { Avatar, Chip, Switch } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import { UserStatus } from '../../../Server/Admin/UserStatus';
+import Loading from '../../../Pages/Components/Loading/Loading';
 
 const AllUsers = () => {
 
@@ -27,24 +28,44 @@ const AllUsers = () => {
       setError('')
   }
 
+  const [UserStatusChange, setUserStatusChange] = useState('')
+
+  if(UserStatusChange){
+    toast.info(UserStatusChange, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
+      setUserStatusChange('')
+  }
+
   const{ access } = useSelector((state) => state.AdminToken)
+
+  const [loading, setLoading] = useState(false)
   
 
   useEffect(() => {
     
     fetchUsers();
     
-  }, []);
+  }, [setUserStatusChange,setLoading]);
   
 
 
   const fetchUsers = async ()=>{
 
     try {
+      setLoading(true)
       const res = await listUserslist(access)
       console.log(res);
       if (res.status===200){
         setListUsers(res.data)
+        setLoading(false)
       }else{
         setError(res.message)
       }
@@ -52,26 +73,32 @@ const AllUsers = () => {
     } catch (error) {
       setError(error)
     }
+    finally{
+      setLoading(false)
+    }
   }
 
-  const handleToggle =async (id,access) =>{
-    const status = await UserStatus(id,access)
-    if (status.status===200){
-      toast.info('user status updated', {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        });
-    }else{
-      setError(status.message)
+  const handleToggle =async (id) =>{
+    setLoading(true)
+    try {
+      const status = await UserStatus(id,access)
+      if (status.status===200){
+        setUserStatusChange('Staus Updated')
+        setLoading(false)
+      }else{
+        setError(status.message)
+      }
+    } catch (error) {
+      setError(error)
+    }finally{
+      setLoading(false)
     }
   
+  }
+  if(loading){
+    return <div className="bg-white bg-opacity-20 flex justify-center items-center h-screen">
+        <Loading />
+    </div>
   }
 
   return (
@@ -148,7 +175,8 @@ const AllUsers = () => {
                         </Typography>
                       </td>
                       <td className={className}>
-                         <Switch  defaultChecked  onChange={()=>handleToggle(id)}/>
+                      {is_active ? <Switch  defaultChecked  onChange={()=>handleToggle(id)}/>:<Switch  onChange={()=>handleToggle(id)}/>}
+                         
                         
                       </td>
                     </tr>

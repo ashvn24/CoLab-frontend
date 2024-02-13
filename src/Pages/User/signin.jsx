@@ -75,7 +75,7 @@ function SignIn() {
 
   const navigateBasedOnRole = useCallback((response) => {
     const role = response.payload.user;
-    const destination = role === 'Editor' ? '/indexEditor' : '/indexCreator';
+    const destination = role === 'Editor' ? '/indexEditor' : '/indexCreator/home';
     navigate(destination); // Assuming `navigate()` is a function for navigation
 }, [navigate]);
 

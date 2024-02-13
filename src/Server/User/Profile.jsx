@@ -1,22 +1,22 @@
 import axios from "axios";
 import { API } from "../../ApiPoints/UserApi/UserApi";
+import { Profile } from "../../Store/UserSlice";
+import { useDispatch } from "react-redux";
 
-export const UserStatus = async(id,access)=>{
+export const UserProfile = async(access)=>{
     try {
 
         const jwtToken = access
-        console.log(jwtToken);
-        const user_id ={id}
-        const res = await axios.post(`${API}/admin/allUsers/`,user_id,{
-            
+        console.log('reached');
+        const res = await axios.get(`${API}/profile/`,{
             headers: {
-                'Content-Type': 'application/json',
                 Authorization: `Bearer ${jwtToken}`
             }
         });
         if (res.status === 200) {
             // Assuming the response contains users data
             return res;
+            
         } else {
             // Handle unexpected status code
             console.error('Unexpected status code:', res.status);

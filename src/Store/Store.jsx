@@ -14,6 +14,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 
 import authSlice from './authSlice'
 import adminAuthSlice from "./adminAuthSlice";
+import UserSlice from "./UserSlice";
 
 
 const persistConfig = {
@@ -25,7 +26,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
     usertoken: authSlice,
     AdminToken: adminAuthSlice,
-
+    userData:UserSlice,
+    
 })
 
 const persistRootReducer = persistReducer(persistConfig, rootReducer);

@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { routes } from "../Roots/RootLinks";
 import { Link, NavLink } from "react-router-dom";
 import {
     Button,
     Typography,
   } from "@material-tailwind/react";
 
-const SideNav = () => {
+const SideNav = ({bg,routes}) => {
+    const RouteLink = routes
     const [openSidenav, setOpenSidenav] = useState(false)
     const [isActive, setIsActive] = useState(false)
     const sidenavType='dark'
@@ -15,7 +15,7 @@ const SideNav = () => {
       <aside
       className={` ${
         openSidenav ? "translate-x-0" : "-translate-x-80"
-      } bg-gradient-to-br from-slate-700 to-slate-800 fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100`}
+      } ${bg} fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 `}
     >
         <div
         className={`relative`}
@@ -41,7 +41,7 @@ const SideNav = () => {
         </IconButton> */}
       </div>
       <div className="m-4">
-        {routes.map(({ layout, pages }, key) => (
+        {RouteLink.map(({ layout, pages }, key) => (
           <ul key={key} className="mb-4 flex flex-col gap-1">
             {pages.map(({ icon, name, path }) => (
               <li key={name}>

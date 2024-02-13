@@ -1,5 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Route, Routes } from 'react-router-dom'
+import SideNav from '../Admin/Components/Widgets/SideNav'
+import TopBar from '../Admin/Components/Widgets/TopBar'
+import { indexCreator } from '../Admin/Components/Roots/RootLinks'
 
 const Index = () => {
   return (
@@ -129,7 +132,21 @@ const Index = () => {
 //   );
 //     </div>
 <div>
-    <h1 className='text-white '>editor home page</h1>
+<div className="min-h-screen ">
+      <SideNav routes={indexCreator} bg={'bg-slate-400 bg-opacity-20'}/>
+      <div className="p-4 xl:ml-80">
+      <TopBar rou={'user'} color={'white'} bg={'border-none bg-slate-400 bg-opacity-20'}/>
+      <Routes>
+          {indexCreator.map(
+            ({ layout, pages }) =>
+              layout === "indexCreator" &&
+              pages.map(({ path, element }) => (
+                <Route exact path={path} element={element} />
+              ))
+          )}
+        </Routes>
+      </div>
+    </div>
 </div>
   )
 }

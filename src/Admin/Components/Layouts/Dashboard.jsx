@@ -1,18 +1,18 @@
 import React from 'react'
 import SideNav from '../Widgets/SideNav';
 import TopBar from '../Widgets/TopBar';
-import routes from '../Roots/RootLinks';
+import  { AdminRoutes } from '../Roots/RootLinks';
 import { Routes, Route } from "react-router-dom";
 
 
 const DashboardLayout = () => {
   return (
     <div className="min-h-screen bg-white">
-      <SideNav />
+      <SideNav routes={AdminRoutes} bg={'bg-gradient-to-br from-slate-700 to-slate-800'}/>
       <div className="p-4 xl:ml-80">
-      <TopBar/>
+      <TopBar rou={'admin'} color={'black'} bg={" "}/>
       <Routes>
-          {routes.map(
+          {AdminRoutes.map(
             ({ layout, pages }) =>
               layout === "dashboard" &&
               pages.map(({ path, element }) => (

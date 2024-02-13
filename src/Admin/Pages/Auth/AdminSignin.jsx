@@ -57,7 +57,7 @@ export function AdminSignIn() {
           setErrorr('Invalid Credential');
       } else {
           setErrorr('');
-          navigate('/dashboard')
+          navigate('/dashboard/home')
           
       }
       } catch (error) {
