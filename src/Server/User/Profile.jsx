@@ -6,6 +6,8 @@ export const UserProfile = async()=>{
         const res = await axiosInstanceUser.get(`/profile/`,);
         if (res.status === 200) {
             // Assuming the response contains users data
+            
+
             return res;
             
         } else {

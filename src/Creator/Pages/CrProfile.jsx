@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { UserProfile } from "../../Server/User/Profile";
-import { useSelector } from "react-redux";
 import Loading from "../../Pages/Components/Loading/Loading";
 
 const CrProfile = () => {
@@ -11,23 +10,24 @@ const CrProfile = () => {
 
 
     useEffect(() => {
-        fetchprofile()
+      try {
+        setLoading(true)
+        const res =  UserProfile()
+        console.log(res.data);
+        // if(res.status===200){
+            setUserData(res.data);
+            // console.log(userData);
+            setLoading(false)
+        // }
+    } catch (error) {
+        console.log('error in profile',error);
+    }
     },[ setLoading ])
 
-    const fetchprofile = async () =>{
-        try {
-            setLoading(true)
-            const res = await UserProfile()
-            if(res.status===200){
-                setUserData(res.data)
-                console.log(userData);
-                setLoading(false)
-            }
-        } catch (error) {
-            console.log('error in profile',error);
-        }
-    }
-    
+    // const fetchprofile = async () =>{
+        
+    // }
+
     if (loading) {
         return <div className="bg-white bg-opacity-20 flex justify-center items-center h-screen">
         <Loading />
@@ -54,7 +54,7 @@ const CrProfile = () => {
         <div className="w-3/5 bg-gray-100">
           {/* Upper Part */}
           <div className="h-1/2 flex flex-col justify-center items-center border-b border-gray-300">
-            <h2 className="text-xl font-bold">name</h2>
+            <h2 className="text-xl font-bold">Name</h2>
             <p className="text-sm text-gray-600">role</p>
           </div>
 

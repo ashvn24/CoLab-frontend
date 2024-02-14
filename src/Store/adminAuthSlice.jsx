@@ -13,11 +13,6 @@ export const LoginAdmin = createAsyncThunk('user/LoginAdmin', async ({ email, pa
     return authdata
 });
 
-// get access from refresh
-// export const GetAccess = createAsyncThunk('user/GetAccess', async ({ refresh }) => {
-//     const authdata = await UserAccess(refresh)
-//     return authdata
-// })
 
 
 
@@ -51,18 +46,7 @@ const AdminauthSlice = createSlice({
                     };
                 }
             })
-            // .addCase(GetAccess.fulfilled, (state, action) => {
-            //     if (action.payload) {
-            //         return {
-            //             ...state,
-            //             access: action.payload.access,
-            //             refresh: action.payload.refresh,
-            //             type: 'user',
-            //             is_authenticated: true,
-            //             registerSuccess: null,
-            //         }
-            //     }
-            // })
+            
     },
 });
 

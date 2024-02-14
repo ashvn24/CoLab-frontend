@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ValidationError } from 'yup';
 import { UserRegister } from '../../Server/User/UserReg';
 import { VerifyUser } from '../../Server/User/VerifyOtp';
+import Loading from '../Components/Loading/Loading';
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -29,53 +30,59 @@ function Signup() {
     });
   };
 
+  const [loading, setLoading] = useState(false);
+
   const [otp, setOtp] = useState(false)
+  const [otpError, setSetOtpError] = useState('')
+  if(otpError){
+    toast.error(otpError, {
+      position: "bottom-left",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
+      setSetOtpError('')
+  }
 
   const handleSubmit = async (e)=>{
     e.preventDefault();
     const isFormValid = Object.values(formData).every(value => value.trim() !== '');
     if(isFormValid){
       try {
+        setLoading(true)
         await userSchema.validate(formData)
         console.log('dtaa',formData);
         const { username, email, role, password } = formData;
         const registrationResponse = await UserRegister(username, email, role, password )
+        if(registrationResponse==='Email already exists'||  registrationResponse === 'Username already exists'){
+          setLoading(false)
+          setSetOtpError(registrationResponse)
+          
+        }else{
+          
+          setOtp(true)
+          setLoading(false)
+          console.log(otp);
+        }
+        setSetOtpError(registrationResponse);
 
-        console.log(registrationResponse);
-
-        setOtp(true)
-        console.log(otp);
         
       } catch (error) {
         if (error instanceof ValidationError) {
-          toast.error(error.message, {
-            position: "bottom-left",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            });
+          setSetOtpError(error.message)
       } else {
-          console.log('Something went wrong, please try again');
+        setSetOtpError('Something went wrong, please try again');
       }
         
       }
      
     }
     else{
-      toast.error('Fill all fields', {
-        position: "bottom-left",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        });
+      setSetOtpError('fill all fields')
     }
     
     
@@ -91,11 +98,19 @@ function Signup() {
       if(verify.message==='account created'){
         console.log('signin complete/user added');
         navigate('/')
+      }else if(verify.message==="code is invalid"){
+        setSetOtpError('Invalid OTP');
       }else{
-        console.log('error in otp');
+        setSetOtpError(verify.message);
       }
     })
   }
+
+  if (loading) {
+    return <div className="bg-white bg-opacity-10 flex justify-center items-center h-screen">
+    <Loading />
+</div>
+}
   return (
     
     <div className="flex items-center justify-center min-h-screen">
@@ -181,6 +196,7 @@ function Signup() {
           >
             Sign up
           </button>
+           
           </form>
           <button className="w-full border border-gray-300 text-md p-2 rounded-lg mb-6 hover:bg-black hover:text-white">
             <img src={google} alt="img" className="w-6 h-6 inline mr-2" />
