@@ -40,7 +40,7 @@ const SideNav = ({bg,routes}) => {
           <XMarkIcon strokeWidth={2.5} className="h-5 w-5 text-white" />
         </IconButton> */}
       </div>
-      <div className="m-4">
+      <div className="m-3">
         {RouteLink.map(({ layout, pages }, key) => (
           <ul key={key} className="mb-4 flex flex-col gap-1">
             {pages.map(({ icon, name, path }) => (

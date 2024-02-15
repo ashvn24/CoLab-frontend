@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
-import { listUserslist } from '../../../Server/Admin/AdminUsers';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Card, CardBody, CardHeader, Typography } from '@material-tailwind/react';
 import { Avatar, Chip, Switch } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
-import { UserStatus } from '../../../Server/Admin/UserStatus';
+import { UserStatus, listUserslist } from '../../../Server/Admin/AdminServer';
 import Loading from '../../../Pages/Components/Loading/Loading';
 
 const AllUsers = () => {

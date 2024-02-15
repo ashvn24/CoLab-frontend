@@ -61,6 +61,7 @@ axiosInstanceUser.interceptors.request.use(
             config.headers.Authorization = `Bearer ${accessToken}`;
             const user = jwtDecode(accessToken)
             const isExp = dayjs.unix(user.exp).diff(dayjs()) < 1
+            console.log('expp',isExp);
             if(isExp){
                 const res = await axios.post(`${API}/token/refresh`,{refresh: refreshToken})
                 if (res.status === 200){
@@ -73,7 +74,7 @@ axiosInstanceUser.interceptors.request.use(
         } else {
             // Handle the case when there's no access token
             // For example, you might want to redirect to login page
-            console.log('error in store');
+            console.log('no access token');
         }
         return config;
     },

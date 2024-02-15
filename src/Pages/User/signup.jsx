@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import google from '../../../Assets/google.svg';
 import sign from '../../../Assets/sign.jpg'
 import Otp from './otp'
@@ -7,9 +7,8 @@ import { userSchema } from '../../../Utils/SignupVal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ValidationError } from 'yup';
-import { UserRegister } from '../../Server/User/UserReg';
-import { VerifyUser } from '../../Server/User/VerifyOtp';
 import Loading from '../Components/Loading/Loading';
+import { UserRegister, VerifyUser } from '../../Server/User/UserServer';
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -20,91 +19,76 @@ function Signup() {
     confirmPassword: ''
   });
 
-  const navigate = useNavigate()
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
-
   const [loading, setLoading] = useState(false);
+  const [otp, setOtp] = useState(false);
+  const [otpError, setOtpError] = useState('');
 
-  const [otp, setOtp] = useState(false)
-  const [otpError, setSetOtpError] = useState('')
-  if(otpError){
-    toast.error(otpError, {
-      position: "bottom-left",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (otpError) {
+      toast.error(otpError, {
+        position: "bottom-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
-      setSetOtpError('')
-  }
+      setOtpError('');
+    }
+  }, [otpError]);
 
-  const handleSubmit = async (e)=>{
+  const handleChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value
+    }));
+  }, []);
+
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     const isFormValid = Object.values(formData).every(value => value.trim() !== '');
-    if(isFormValid){
+    if (isFormValid) {
       try {
-        setLoading(true)
-        await userSchema.validate(formData)
-        console.log('dtaa',formData);
+        setLoading(true);
+        await userSchema.validate(formData);
         const { username, email, role, password } = formData;
-        const registrationResponse = await UserRegister(username, email, role, password )
-        if(registrationResponse==='Email already exists'||  registrationResponse === 'Username already exists'){
-          setLoading(false)
-          setSetOtpError(registrationResponse)
-          
-        }else{
-          
-          setOtp(true)
-          setLoading(false)
-          console.log(otp);
+        const registrationResponse = await UserRegister(username, email, role, password);
+        if (registrationResponse === 'Email already exists' || registrationResponse === 'Username already exists') {
+          setOtpError(registrationResponse);
+        } else {
+          setOtp(true);
         }
-        setSetOtpError(registrationResponse);
-
-        
       } catch (error) {
         if (error instanceof ValidationError) {
-          setSetOtpError(error.message)
+          setOtpError(error.message);
+        } else {
+          setOtpError('Something went wrong, please try again');
+        }
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setOtpError('Fill all fields');
+    }
+  }, [formData]);
+
+  const onOtpSubmit = useCallback((otp) => {
+    VerifyUser(otp).then(verify => {
+      if (verify.message === 'account created') {
+        setOtpError('Registered succesfully')
+        navigate('/');
+      } else if (verify.message === "code is invalid") {
+        setOtpError('Invalid OTP');
       } else {
-        setSetOtpError('Something went wrong, please try again');
+        setOtpError(verify.message);
       }
-        
-      }
-     
-    }
-    else{
-      setSetOtpError('fill all fields')
-    }
-    
-    
-  }
-
-
-  // otp handle here
-
-  const onOtpSubmit=(otp)=>{
-    console.log('success');
-    VerifyUser(otp).then(verify=>{
-      console.log('verifymsg',verify);
-      if(verify.message==='account created'){
-        console.log('signin complete/user added');
-        navigate('/')
-      }else if(verify.message==="code is invalid"){
-        setSetOtpError('Invalid OTP');
-      }else{
-        setSetOtpError(verify.message);
-      }
-    })
-  }
+    });
+  }, [navigate]);
 
   if (loading) {
     return <div className="bg-white bg-opacity-10 flex justify-center items-center h-screen">

@@ -18,7 +18,7 @@ const DashboardLayout = () => {
   return (
     <div className="min-h-screen bg-white">
       <SideNav routes={AdminRoutes} bg={'bg-gradient-to-br from-slate-700 to-slate-800'}/>
-      <div className="p-4 xl:ml-80">
+      <div className="p-4 xl:ml-64">
       <TopBar rou={'admin'} color={'black'} bg={" "}/>
       <Routes>
           {AdminRoutes.map(

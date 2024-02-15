@@ -57,7 +57,7 @@ function SignIn() {
         if (response.payload.error === 'Authentication Failed') {
           setError('Invalid Credential');
       } else {
-          setError('');
+          setError('Login succesfull');
           navigateBasedOnRole(response)
       }
   
